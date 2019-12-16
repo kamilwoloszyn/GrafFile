@@ -5,23 +5,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class FileFinder {
-    public static void main(String[] args)
-    {
-        for (String s : getInfo("C:\\Users\\RZONCA\\IdeaProjects\\Projekcik\\Files") ) // sciezka do katalogu z plikami .java
-        {
-            System.out.println(s);
-
-        }
-
-    }
-    public static List<String> getInfo(String nameDirectory)
+    public static List<String> getListOfFile(String nameDirectory , String extension)
     {
 
         File folder = new File(nameDirectory);
 
         List<String> result = new LinkedList<>();
 
-        search(".*\\.java", folder, result);
+        search(".*\\"+extension, folder, result);
 
         return result;
     }
