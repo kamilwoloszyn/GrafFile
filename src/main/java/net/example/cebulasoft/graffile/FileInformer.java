@@ -36,7 +36,7 @@ public class FileInformer {
                     for (String line: lines) {
                         for (String className: connections.keySet()){
                             if(line.indexOf(className)!=-1){
-                                connections.get(className).addReference(); //TODO: Naprawic polaczenie miedzy plikami(jedno dla wszystkich)
+                                connections.get(className).addReference("test"); //TODO: Naprawic polaczenie miedzy plikami(jedno dla wszystkich)
                             }
                         }
                     }
