@@ -9,8 +9,7 @@ public class FilesConnectionInfo extends HashMap<String, FileInfo>
     @Override
     public FileInfo put(String key, FileInfo info)
     {
-
-        if(get(info.getName())!=null)
+        if(get(info.getName())==null)
         {
             super.put(key, info);
             return info;
