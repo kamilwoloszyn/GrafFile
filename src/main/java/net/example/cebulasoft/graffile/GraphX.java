@@ -3,37 +3,33 @@
  * */
 
 package net.example.cebulasoft.graffile;
+
 import com.mxgraph.layout.mxCircleLayout;
 import com.mxgraph.layout.mxIGraphLayout;
 import com.mxgraph.swing.mxGraphComponent;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import org.jgrapht.ext.JGraphXAdapter;
-import org.jgrapht.graph.*;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.DirectedWeightedMultigraph;
 
+import javax.swing.*;
 
-
-
-public class GraphX{
+public class GraphX {
 
     JFrame frame;
 
-    JGraphXAdapter<String,DefaultWeightedEdge> gAdapter;
+    JGraphXAdapter<String, DefaultWeightedEdge> gAdapter;
     mxIGraphLayout layout;
 
 
-    public GraphX(DirectedWeightedMultigraph<String, DefaultWeightedEdge> baseGraph)
-    {
-        this.frame= new JFrame("Graf");
-        this.gAdapter = new JGraphXAdapter<String,DefaultWeightedEdge>(baseGraph);
+    public GraphX(DirectedWeightedMultigraph<String, DefaultWeightedEdge> baseGraph) {
+        this.frame = new JFrame("Graf");
+        this.gAdapter = new JGraphXAdapter<String, DefaultWeightedEdge>(baseGraph);
 
-        this.layout= new mxCircleLayout(gAdapter);
+        this.layout = new mxCircleLayout(gAdapter);
     }
 
-    public void Exec()
-    {
-        SwingUtilities.invokeLater(() -> {
+    public void Exec() {
+        SwingUtilities.invokeLater(()Ą -> {
             layout.execute(gAdapter.getDefaultParent());
             frame.add(new mxGraphComponent(gAdapter));
             frame.pack();
