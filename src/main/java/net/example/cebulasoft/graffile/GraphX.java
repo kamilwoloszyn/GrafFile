@@ -29,7 +29,7 @@ public class GraphX {
     }
 
     public void Exec() {
-        SwingUtilities.invokeLater(()Ą -> {
+        SwingUtilities.invokeLater(() -> {
             layout.execute(gAdapter.getDefaultParent());
             frame.add(new mxGraphComponent(gAdapter));
             frame.pack();
