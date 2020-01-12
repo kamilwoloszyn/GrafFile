@@ -12,12 +12,15 @@ public class FileController {
 
         FileInformer.getInfo(listFile, filesCollection); //get information of file and put it in to the container.
 
-       // FileGrafAdapter graf = new FileGrafAdapter(filesCollection); // make graf
-       // graf.show(); // show graf
+        FileGrafAdapter graf = new FileGrafAdapter(filesCollection); // make graf
+        graf.show(); // show graf
 
     }
 
     public static void main(String... args){
+        FilesConnectionInfo i= new FilesConnectionInfo();
+        FileGrafAdapter graf = new FileGrafAdapter(i); // make graf
+        graf.show(); // show graf
         System.out.print("działa?");
     }
 
