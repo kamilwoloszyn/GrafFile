@@ -47,11 +47,5 @@ public class FileInfo {
     public int hashCode() {
         return Objects.hash(path, name);
     }
-
-
-    public void setReferences(Iterable<Object> references) {
-        this.references = references;
-    }
-
 }
 

@@ -23,33 +23,13 @@ public class GraphB {
         DirectedWeightedMultigraph<String,DefaultWeightedEdge> graph = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
 
         // extract data from hashmap
-        for (FileInfo key : d.values()) {
-            String name = key.getName();
-            graph.addVertex(name);
-        }
+        for (String key : d.keySet())
+        {
+            FileInfo extracted = d.get(key); // pojedynczy obiekt fileinfo
+            graph.addVertex(extracted.getName()); //dodaj nazwę pliku jako punkt na grafie
 
-        for (FileInfo key : d.values()) {
-            /*
-               * SUGGESTED:
-               *  Dodajcie do klasy FileInfo metodę która zwraca referencję, to znaczy pole "references",
-               *
-             */
-
-            
-            /*
-            ZAKOMENTOWANE ŻEBY NIE SYPAŁO BŁĘDAMI !
-             */
-
-//            key.getReferences().forEach((s, integer) -> {
-//                graph.addEdge(key.getName(), s);
-//                graph.setEdgeWeight(key.getName(), s, integer);
-//            });
         }
         //end
-
-
-
-
 
         /*
          * INFO:
