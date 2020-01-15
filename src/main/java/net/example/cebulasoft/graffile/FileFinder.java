@@ -5,33 +5,27 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class FileFinder {
-    public static List<String> getListOfFile(String nameDirectory , String extension)
-    {
+    public static List<String> getListOfFile(String nameDirectory, String extension) {
 
         File folder = new File(nameDirectory);
 
         List<String> result = new LinkedList<>();
 
-        search(".*\\"+extension, folder, result);
+        search("(.*)." + extension, folder, result);
 
         return result;
     }
 
-    public static void search(String pattern, File folder, List<String> result)
-    {
-        for (File f : folder.listFiles())
-        {
+    public static void search(String pattern, File folder, List<String> result) {
+        for (File file : folder.listFiles()) {
 
-            if (f.isDirectory())
-            {
-                search(pattern, f, result);
+            if (file.isDirectory()) {
+                search(pattern, file, result);
             }
 
-            if (f.isFile())
-            {
-                if (f.getName().matches(pattern))
-                {
-                    result.add(f.getAbsolutePath());
+            if (file.isFile()) {
+                if (file.getName().matches(pattern)) {
+                    result.add(file.getAbsolutePath());
                 }
             }
 
