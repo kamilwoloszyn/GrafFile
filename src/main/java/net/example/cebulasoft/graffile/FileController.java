@@ -1,12 +1,11 @@
 package net.example.cebulasoft.graffile;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class FileController {
     FilesConnectionInfo filesCollection; // contain all information about files like: size, connections between files, name and path.
 
-    public FileController(String catalog){
+    public FileController(String catalog) {
         filesCollection = new FilesConnectionInfo();
         List<String> listFile = FileFinder.getListOfFile("java", catalog); // take all file with extension .java and set them all names to list.
 
@@ -17,8 +16,8 @@ public class FileController {
 
     }
 
-    public static void main(String... args){
-        FilesConnectionInfo i= new FilesConnectionInfo();
+    public static void main(String... args) {
+        FilesConnectionInfo i = new FilesConnectionInfo();
         FileGrafAdapter graf = new FileGrafAdapter(i); // make graf
         graf.show(); // show graf
         System.out.print("działa?");
