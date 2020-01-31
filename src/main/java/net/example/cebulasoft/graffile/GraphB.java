@@ -7,6 +7,10 @@ package net.example.cebulasoft.graffile;
 
 import org.jgrapht.graph.*;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+
 
 public class GraphB {
 
@@ -22,29 +26,25 @@ public class GraphB {
     {
         DirectedWeightedMultigraph<String,DefaultWeightedEdge> graph = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
 
+
         // extract data from hashmap
-        for (FileInfo key : d.values()) {
-            String name = key.getName();
-            graph.addVertex(name);
+
+        for (FileInfo file : d.values()) {
+
+            String name = file.getName();
+            graph.addVertex(name); //add vertex to graph
+
+
+            for (Iterator<Map.Entry<String, Integer>> it = file.getIteratorToReferences(); it.hasNext(); ) {
+                Map.Entry<String, Integer> connection = it.next();
+               DefaultWeightedEdge edge= graph.addEdge(name,connection.getKey());
+                graph.setEdgeWeight(edge,connection.getValue());
+            }
+
+
+
         }
 
-        for (FileInfo key : d.values()) {
-            /*
-             * SUGGESTED:
-             *  Dodajcie do klasy FileInfo metodę która zwraca referencję, to znaczy pole "references",
-             *
-             */
-
-
-            /*
-            ZAKOMENTOWANE ŻEBY NIE SYPAŁO BŁĘDAMI !
-             */
-
-//            key.getReferences().forEach((s, integer) -> {
-//                graph.addEdge(key.getName(), s);
-//                graph.setEdgeWeight(key.getName(), s, integer);
-//            });
-        }
         //end
 
         /*
