@@ -1,22 +1,35 @@
-package net.example.cebulasoft.graffile;
+﻿package net.example.cebulasoft.graffile;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 
 public class FileInfo {
-    private String path; // paczka
+    private String packageName; // paczka
     private String name; // nazwa pliku razem z rozszerzeniem.
     private HashMap<String, Integer> references; // przechowuje liste plików z których korzysta plik.
 
     public FileInfo(String path, String name) {
-        this.path = path;
+        this.packageName = path;
         this.name = name;
         this.references = new HashMap<String, Integer>();
     }
 
-    public String getPath() {
-        return path;
+    public String getPackageName() {
+        return packageName;
+    }
+    public String getFullName(){
+        return packageName + '.' + name;
+    }
+
+    @Override
+    public String toString() {
+        return "FileInfo{" +
+                "packageName='" + packageName + '\'' +
+                ", name='" + name + '\'' +
+                ", references=" + references +
+                '}';
     }
 
     public void addReference(String file){
@@ -28,12 +41,12 @@ public class FileInfo {
         }
     }
 
-    public Iterator<Integer> getIteratorToReferences(){
-        return references.values().iterator();
+    public Iterator<Map.Entry<String, Integer>> getIteratorToReferences(){
+        return references.entrySet().iterator();
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 
     public String getName() {
@@ -45,7 +58,7 @@ public class FileInfo {
     }
     @Override
     public int hashCode() {
-        return Objects.hash(path, name);
+        return Objects.hash(packageName, name);
     }
 }
 
