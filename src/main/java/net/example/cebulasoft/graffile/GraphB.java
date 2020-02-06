@@ -5,10 +5,12 @@
 
 package net.example.cebulasoft.graffile;
 
+import net.example.cebulasoft.graffile.method.ClassInfo;
+import net.example.cebulasoft.graffile.method.MethodInfo;
 import org.jgrapht.graph.*;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 
@@ -20,6 +22,10 @@ public class GraphB {
     {
 
         B= buildGraph(d);
+    }
+    public GraphB(ClassInfo infos)
+    {
+        B= buildGraph(List<ClassInfo> infos);
     }
 
     private static DirectedWeightedMultigraph<String,DefaultWeightedEdge> buildGraph(FilesConnectionInfo d)
@@ -73,6 +79,18 @@ public class GraphB {
 //        graph.setEdgeWeight(e,2);
 
         return graph;
+    }
+
+    public DirectedWeightedMultigraph<String,DefaultWeightedEdge> buildGraph(List<ClassInfo> infos)
+    {
+        for(ClassInfo classInfo : infos){
+            String className = classInfo.getName();
+            for (MethodInfo methodInfo: classInfo.getMethods()) {
+                String methodClassName =  methodInfo.getClassName();
+                String methodName = methodInfo.getName();
+                String parameters = methodInfo.getParameters();
+            }
+        }
     }
 
     public DirectedWeightedMultigraph getGraph()
