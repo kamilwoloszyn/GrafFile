@@ -19,13 +19,17 @@ public class MethodInfo {
     @NonNull
     private String body;
 
+    public String getClassName() {
+        return className;
+    }
+
     private String className;
 
     @NonNull
     private List<MethodCall> methodsUsed;
 
-    public void addCall(String methodName, int i) {
-        this.methodsUsed.add(MethodCall.of(methodName, i));
+    public void addCall(String className, String methodName, int i) {
+        this.methodsUsed.add(MethodCall.of(className, methodName, i));
     }
 
     @Override

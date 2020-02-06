@@ -1,14 +1,13 @@
 package net.example.cebulasoft.graffile;
 
-import net.example.cebulasoft.graffile.method.ClassInfo;
-import net.example.cebulasoft.graffile.method.FileParser;
-import net.example.cebulasoft.graffile.method.MethodDependenciesResolver;
-import net.example.cebulasoft.graffile.method.MethodDependencyValidator;
+import net.example.cebulasoft.graffile.method.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class FileController {
 	FilesConnectionInfo filesCollection; // contain all information about files like: size, connections between files, name and path.
@@ -74,6 +73,9 @@ public class FileController {
 						isGraphSelected = true;
 						graphType = args[i];
 					}
+					break;
+				default:
+					throw new RuntimeException("Wrong argument: " + args[i]);
 			}
 		}
 		path = path.normalize();
@@ -86,6 +88,7 @@ public class FileController {
 
 		switch (graphType) {
 			case "file":
+				System.out.println("tu");
 				FilesConnectionInfo filesInfo = new FilesConnectionInfo();
 				new FileInformer().getInfo(listOfFile, filesInfo);
 				FileGrafAdapter adapter = new FileGrafAdapter(filesInfo);
@@ -94,21 +97,19 @@ public class FileController {
 			case "method":
 				MethodDependenciesResolver resolver = new MethodDependenciesResolver(listOfFile, new MethodDependencyValidator(), new FileParser());
 				resolver.findDependencies();
+				List<ClassInfo> classInfos = resolver.getClassInfos();
+				System.out.println();
 				break;
 			case "package":
+				MethodDependenciesResolver resolver2 = new MethodDependenciesResolver(listOfFile, new MethodDependencyValidator(), new FileParser());
+				resolver2.findDependencies();
+				FilesConnectionInfo filesInfo2 = new FilesConnectionInfo();
+				new FileInformer().getInfo(listOfFile, filesInfo2);
+				HashMap<String, PackageInfo> info = new PackageParser(filesInfo2, resolver2.getClassInfos()).parse();
 				break;
 			default:
 				throw new RuntimeException("Wrong graphType");
-
-
 		}
-
-
-		//System.out.println(resolver);
-
-
-		//FileGrafAdapter graf = new FileGrafAdapter(i); // make graf
-		//graf.show(); // show graf
 	}
 
 }

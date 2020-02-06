@@ -10,11 +10,11 @@ public class FilesConnectionInfo extends HashMap<String, FileInfo>
     public FileInfo put(String key, FileInfo info)
     {
 
-        if(get(info.getName())!=null)
+        if(!containsKey(key))
         {
             super.put(key, info);
             return info;
         }
-        return null;
+        throw new RuntimeException("Override key not allowed.");
     }
 }
