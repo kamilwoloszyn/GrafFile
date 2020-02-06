@@ -23,9 +23,9 @@ public class GraphB {
 
         B= buildGraph(d);
     }
-    public GraphB(ClassInfo infos)
+    public GraphB(List<ClassInfo> infos)
     {
-        B= buildGraph(List<ClassInfo> infos);
+        B= buildGraph(infos);
     }
 
     private static DirectedWeightedMultigraph<String,DefaultWeightedEdge> buildGraph(FilesConnectionInfo d)
@@ -83,14 +83,32 @@ public class GraphB {
 
     public DirectedWeightedMultigraph<String,DefaultWeightedEdge> buildGraph(List<ClassInfo> infos)
     {
+        DirectedWeightedMultigraph<String,DefaultWeightedEdge> graph = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
+
         for(ClassInfo classInfo : infos){
             String className = classInfo.getName();
             for (MethodInfo methodInfo: classInfo.getMethods()) {
                 String methodClassName =  methodInfo.getClassName();
                 String methodName = methodInfo.getName();
                 String parameters = methodInfo.getParameters();
+
+                String vertex = (className+" "+methodClassName+"."+methodName+"("+parameters+")");
+                graph.addVertex(vertex);
+                List methodUsed = methodInfo.getMethodsUsed();
+
+
+
+                for (Object oneElementMethod :methodUsed)
+                {
+                    String toVertex = oneElementMethod.toString();
+                    graph.addVertex(toVertex);
+                    graph.addEdge(vertex,toVertex);
+                }
+
+
             }
         }
+        return graph;
     }
 
     public DirectedWeightedMultigraph getGraph()
