@@ -47,10 +47,21 @@ public class MethodDependenciesResolver {
                     if (dependencyConstraintChecker.checkIfValidCall(classInfo, classMethod, method)) {
                         int totalCalls = dependencyConstraintChecker.countMethodCalls(classMethod.getBody(), method.getName());
                         if (totalCalls > 0) {
-                            classMethod.addCall(method.getName(), totalCalls);
+                            classMethod.addCall(method.getClassName(), method.getName(), totalCalls);
                         }
                     }
                 })
         );
+    }
+
+    public List<ClassInfo> getClassInfos() {
+        return classInfos;
+    }
+
+    @Override
+    public String toString() {
+        return "MethodDependenciesResolver{" +
+                "classInfos=" + classInfos +
+                '}';
     }
 }

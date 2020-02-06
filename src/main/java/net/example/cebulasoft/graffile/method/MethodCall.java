@@ -11,6 +11,7 @@ import lombok.ToString;
 @ToString
 public class MethodCall {
 
+    private String className;
     private String methodCalledName;
     private int numberOfCalls;
 }

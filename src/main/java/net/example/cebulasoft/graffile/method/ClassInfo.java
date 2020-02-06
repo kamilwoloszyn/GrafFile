@@ -16,6 +16,10 @@ public class ClassInfo {
 
     private List<MethodInfo> methods = new ArrayList<>();
 
+    public String getName() {
+        return name;
+    }
+
     private List<String> fieldTypes = new ArrayList<>();
 
     public List<MethodInfo> getMethods() {
@@ -28,6 +32,10 @@ public class ClassInfo {
 
     public void setName(String className) {
         this.name = className;
+    }
+
+    public String getAbsolutePath() {
+        return absolutePath;
     }
 
     public void setAbsolutePath(String absolutePath) {
