@@ -9,6 +9,7 @@ import net.example.cebulasoft.graffile.method.ClassInfo;
 import net.example.cebulasoft.graffile.method.MethodInfo;
 import org.jgrapht.graph.*;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,10 @@ public class GraphB {
     public GraphB(List<ClassInfo> infos)
     {
         B= buildGraph(infos);
+    }
+    public GraphB(HashMap<String,PackageInfo> packageInfoHashMap)
+    {
+        B= buildGraph(packageInfoHashMap);
     }
 
     private static DirectedWeightedMultigraph<String,DefaultWeightedEdge> buildGraph(FilesConnectionInfo d)
@@ -108,6 +113,28 @@ public class GraphB {
 
             }
         }
+        return graph;
+    }
+
+    public DirectedWeightedMultigraph<String,DefaultWeightedEdge> buildGraph(HashMap<String,PackageInfo> packageInfoHashMap)
+    {
+        DirectedWeightedMultigraph<String,DefaultWeightedEdge> graph = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
+
+        for(Map.Entry<String,PackageInfo> entry : packageInfoHashMap.entrySet())
+        {
+            String firstVertex = entry.getValue().getName();
+            graph.addVertex(firstVertex);
+            HashMap<String,Integer> packageConnectionInfo = entry.getValue().getPackageConnection();
+            for(Map.Entry<String,Integer> entryPackageConnectionInfo :packageConnectionInfo.entrySet())
+            {
+                String secondVertex = entryPackageConnectionInfo.getKey();
+                DefaultWeightedEdge edge = graph.addEdge(firstVertex,secondVertex);
+                graph.setEdgeWeight(edge,entryPackageConnectionInfo.getValue());
+
+            }
+
+        }
+
         return graph;
     }
 
