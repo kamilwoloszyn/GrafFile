@@ -12,12 +12,20 @@ public class PackageInfo {
 
 	}
 
-	public void increaseWeightConnection(String packageName){
+	public void increaseWeightConnection(String packageName, int i){
 
 		if(packageConnection.containsKey(packageName))
-			packageConnection.put(packageName, packageConnection.get(packageName) +1);
+			packageConnection.put(packageName, packageConnection.get(packageName) + i);
 		else
-			packageConnection.put(packageName, 1);
+			packageConnection.put(packageName, i);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public HashMap<String, Integer> getPackageConnection() {
+		return packageConnection;
 	}
 
 	@Override
