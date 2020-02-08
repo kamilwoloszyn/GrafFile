@@ -17,54 +17,48 @@ import java.util.Map;
 
 public class GraphB {
 
-    DirectedWeightedMultigraph B;
+	DirectedWeightedMultigraph B;
 
-    public GraphB(FilesConnectionInfo d)
-    {
+	public GraphB(FilesConnectionInfo d) {
 
-        B= buildGraph(d);
-    }
-    public GraphB(List<ClassInfo> infos)
-    {
-        B= buildGraph(infos);
-    }
-    public GraphB(HashMap<String,PackageInfo> packageInfoHashMap)
-    {
-        B= buildGraph(packageInfoHashMap);
-    }
+		B = buildGraph(d);
+	}
 
-    private static DirectedWeightedMultigraph<String,DefaultWeightedEdge> buildGraph(FilesConnectionInfo d)
-    {
-        DirectedWeightedMultigraph<String,DefaultWeightedEdge> graph = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
+	public GraphB(List<ClassInfo> infos) {
+		B = buildGraph(infos);
+	}
 
+	public GraphB(HashMap<String, PackageInfo> packageInfoHashMap) {
+		B = buildGraph(packageInfoHashMap);
+	}
 
-        // extract data from hashmap
+	private static DirectedWeightedMultigraph<String, DefaultWeightedEdge> buildGraph(FilesConnectionInfo d) {
+		DirectedWeightedMultigraph<String, DefaultWeightedEdge> graph = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
 
-        for (FileInfo file : d.values()) {
+		// extract data from hashmap
 
-            String name = file.getName();
-            graph.addVertex(name); //add vertex to graph
+		for (FileInfo file : d.values()) {
 
+			String name = file.getFullName();
+			graph.addVertex(name); //add vertex to graph
+		}
+		for (FileInfo file : d.values()) {
+			for (Iterator<Map.Entry<String, Integer>> it = file.getIteratorToReferences(); it.hasNext(); ) {
+				Map.Entry<String, Integer> connection = it.next();
+				DefaultWeightedEdge edge = graph.addEdge(file.getFullName(), connection.getKey());
+				graph.setEdgeWeight(edge, connection.getValue());
+			}
+		}
 
-            for (Iterator<Map.Entry<String, Integer>> it = file.getIteratorToReferences(); it.hasNext(); ) {
-                Map.Entry<String, Integer> connection = it.next();
-               DefaultWeightedEdge edge= graph.addEdge(name,connection.getKey());
-                graph.setEdgeWeight(edge,connection.getValue());
-            }
+		//end
 
+		/*
+		 * INFO:
+		 * Poniżej znajdują się przykładowe dane do grafu wraz z krawędziami,
+		 * to tak aby pokazać że sam graf działa, domyślnie zakomentowane.
+		 */
 
-
-        }
-
-        //end
-
-        /*
-         * INFO:
-         * Poniżej znajdują się przykładowe dane do grafu wraz z krawędziami,
-         * to tak aby pokazać że sam graf działa, domyślnie zakomentowane.
-         */
-
-        //sample data - labels
+		//sample data - labels
 
 //        String x1= "one";
 //        String x2= "two";
@@ -76,72 +70,65 @@ public class GraphB {
 //        graph.addVertex(x3);
 
 
-        //sample data - edges
+		//sample data - edges
 
 //        DefaultWeightedEdge e = graph.addEdge(x1,x2);
 //        graph.setEdgeWeight(e,1);
 //        e= graph.addEdge(x2,x3);
 //        graph.setEdgeWeight(e,2);
 
-        return graph;
-    }
+		return graph;
+	}
 
-    public DirectedWeightedMultigraph<String,DefaultWeightedEdge> buildGraph(List<ClassInfo> infos)
-    {
-        DirectedWeightedMultigraph<String,DefaultWeightedEdge> graph = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
+	public DirectedWeightedMultigraph<String, DefaultWeightedEdge> buildGraph(List<ClassInfo> infos) {
+		DirectedWeightedMultigraph<String, DefaultWeightedEdge> graph = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
 
-        for(ClassInfo classInfo : infos){
-            String className = classInfo.getName();
-            for (MethodInfo methodInfo: classInfo.getMethods()) {
-                String methodClassName =  methodInfo.getClassName();
-                String methodName = methodInfo.getName();
-                String parameters = methodInfo.getParameters();
+		for (ClassInfo classInfo : infos) {
+			String className = classInfo.getName();
+			for (MethodInfo methodInfo : classInfo.getMethods()) {
+				String methodClassName = methodInfo.getClassName();
+				String methodName = methodInfo.getName();
+				String parameters = methodInfo.getParameters();
 
-                String vertex = (className+" "+methodClassName+"."+methodName+"("+parameters+")");
-                graph.addVertex(vertex);
-                List methodUsed = methodInfo.getMethodsUsed();
-
+				String vertex = (className + " " + methodClassName + "." + methodName + "(" + parameters + ")");
+				graph.addVertex(vertex);
+				List methodUsed = methodInfo.getMethodsUsed();
 
 
-                for (Object oneElementMethod :methodUsed)
-                {
-                    String toVertex = oneElementMethod.toString();
-                    graph.addVertex(toVertex);
-                    graph.addEdge(vertex,toVertex);
-                }
+				for (Object oneElementMethod : methodUsed) {
+					String toVertex = oneElementMethod.toString();
+					graph.addVertex(toVertex);
+					graph.addEdge(vertex, toVertex);
+				}
 
 
-            }
-        }
-        return graph;
-    }
+			}
+		}
+		return graph;
+	}
 
-    public DirectedWeightedMultigraph<String,DefaultWeightedEdge> buildGraph(HashMap<String,PackageInfo> packageInfoHashMap)
-    {
-        DirectedWeightedMultigraph<String,DefaultWeightedEdge> graph = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
+	public DirectedWeightedMultigraph<String, DefaultWeightedEdge> buildGraph(HashMap<String, PackageInfo> packageInfoHashMap) {
+		DirectedWeightedMultigraph<String, DefaultWeightedEdge> graph = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
 
-        for(Map.Entry<String,PackageInfo> entry : packageInfoHashMap.entrySet())
-        {
-            String firstVertex = entry.getValue().getName();
-            graph.addVertex(firstVertex);
-            HashMap<String,Integer> packageConnectionInfo = entry.getValue().getPackageConnection();
-            for(Map.Entry<String,Integer> entryPackageConnectionInfo :packageConnectionInfo.entrySet())
-            {
-                String secondVertex = entryPackageConnectionInfo.getKey();
-                DefaultWeightedEdge edge = graph.addEdge(firstVertex,secondVertex);
-                graph.setEdgeWeight(edge,entryPackageConnectionInfo.getValue());
+		for (Map.Entry<String, PackageInfo> entry : packageInfoHashMap.entrySet()) {
+			String firstVertex = entry.getValue().getName();
+			graph.addVertex(firstVertex);
+			HashMap<String, Integer> packageConnectionInfo = entry.getValue().getPackageConnection();
+			for (Map.Entry<String, Integer> entryPackageConnectionInfo : packageConnectionInfo.entrySet()) {
+				String secondVertex = entryPackageConnectionInfo.getKey();
+				DefaultWeightedEdge edge = graph.addEdge(firstVertex, secondVertex);
+				graph.setEdgeWeight(edge, entryPackageConnectionInfo.getValue());
 
-            }
+			}
 
-        }
+		}
 
-        return graph;
-    }
+		return graph;
+	}
 
-    public DirectedWeightedMultigraph getGraph()
-    {
-        return B;
-    }
+	public DirectedWeightedMultigraph getGraph() {
+		return B;
+	}
 
 
 }

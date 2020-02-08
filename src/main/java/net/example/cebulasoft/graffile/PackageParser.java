@@ -5,7 +5,6 @@ import net.example.cebulasoft.graffile.method.MethodCall;
 import net.example.cebulasoft.graffile.method.MethodInfo;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 public class PackageParser {
@@ -32,6 +31,7 @@ public class PackageParser {
 				for (MethodCall methodCall: methodInfo.getMethodsUsed()) {
 					//System.out.println(methodCall.getClassName());
 					String pathClass = "";
+					int calls = methodCall.getNumberOfCalls();
 					for (ClassInfo classInfo1: classInfos) {
 						//System.out.println("Test: "+ classInfo1.getName());
 						if(classInfo1.getName() != null && classInfo1.getName().equals(methodCall.getClassName())) {
@@ -44,7 +44,7 @@ public class PackageParser {
 					String methodPackageName = methodClass.getPackageName();
 					if(!packageName.equals(methodPackageName)){
 						System.out.println("Przed: " +packageInfo);
-						packageInfo.increaseWeightConnection(methodPackageName);
+						packageInfo.increaseWeightConnection(methodPackageName, calls);
 						System.out.println("Po: " + packageInfo);
 					}
 				}
