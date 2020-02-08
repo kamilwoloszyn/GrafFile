@@ -1,13 +1,22 @@
 package net.example.cebulasoft.graffile;
 
-import net.example.cebulasoft.graffile.method.*;
+import net.example.cebulasoft.graffile.graphs.FileGrafAdapter;
+import net.example.cebulasoft.graffile.graphs.MethodGrafAdapter;
+import net.example.cebulasoft.graffile.graphs.PackageGrafAdapter;
+import net.example.cebulasoft.graffile.parsers.FileInformer;
+import net.example.cebulasoft.graffile.parsers.FileParser;
+import net.example.cebulasoft.graffile.parsers.MethodDependencyValidator;
+import net.example.cebulasoft.graffile.parsers.PackageParser;
+import net.example.cebulasoft.graffile.structure.ClassInfo;
+import net.example.cebulasoft.graffile.structure.FilesConnectionInfo;
+import net.example.cebulasoft.graffile.structure.MethodDependenciesResolver;
+import net.example.cebulasoft.graffile.structure.PackageInfo;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public class FileController {
 	FilesConnectionInfo filesCollection; // contain all information about files like: size, connections between files, name and path.
@@ -88,7 +97,6 @@ public class FileController {
 
 		switch (graphType) {
 			case "file":
-				System.out.println("tu");
 				FilesConnectionInfo filesInfo = new FilesConnectionInfo();
 				new FileInformer().getInfo(listOfFile, filesInfo);
 				FileGrafAdapter adapter = new FileGrafAdapter(filesInfo);
@@ -98,7 +106,8 @@ public class FileController {
 				MethodDependenciesResolver resolver = new MethodDependenciesResolver(listOfFile, new MethodDependencyValidator(), new FileParser());
 				resolver.findDependencies();
 				List<ClassInfo> classInfos = resolver.getClassInfos();
-				System.out.println();
+				MethodGrafAdapter adapter1 = new MethodGrafAdapter(classInfos);
+				adapter1.show();
 				break;
 			case "package":
 				MethodDependenciesResolver resolver2 = new MethodDependenciesResolver(listOfFile, new MethodDependencyValidator(), new FileParser());
@@ -106,6 +115,8 @@ public class FileController {
 				FilesConnectionInfo filesInfo2 = new FilesConnectionInfo();
 				new FileInformer().getInfo(listOfFile, filesInfo2);
 				HashMap<String, PackageInfo> info = new PackageParser(filesInfo2, resolver2.getClassInfos()).parse();
+				PackageGrafAdapter adapter2 = new PackageGrafAdapter(info);
+				adapter2.show();
 				break;
 			default:
 				throw new RuntimeException("Wrong graphType");

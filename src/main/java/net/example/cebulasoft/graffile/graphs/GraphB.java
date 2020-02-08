@@ -3,11 +3,11 @@
  * Brakuje krawedzi grafu.
  * */
 
-package net.example.cebulasoft.graffile;
+package net.example.cebulasoft.graffile.graphs;
 
-import net.example.cebulasoft.graffile.method.ClassInfo;
-import net.example.cebulasoft.graffile.method.MethodInfo;
-import org.jgrapht.graph.*;
+import net.example.cebulasoft.graffile.structure.*;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.DirectedWeightedMultigraph;
 
 import java.util.HashMap;
 import java.util.Iterator;
