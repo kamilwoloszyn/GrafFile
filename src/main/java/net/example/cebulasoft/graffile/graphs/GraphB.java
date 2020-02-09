@@ -6,7 +6,6 @@
 package net.example.cebulasoft.graffile.graphs;
 
 import net.example.cebulasoft.graffile.structure.*;
-import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DirectedWeightedMultigraph;
 
@@ -81,8 +80,8 @@ public class GraphB {
 		return graph;
 	}
 
-	public DirectedWeightedMultigraph<String, DefaultWeightedEdge> buildGraph(List<ClassInfo> infos) {
-		DirectedWeightedMultigraph<String, DefaultWeightedEdge> graph = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
+	public DirectedWeightedMultigraph<String, GrafEdge> buildGraph(List<ClassInfo> infos) {
+		DirectedWeightedMultigraph<String, GrafEdge> graph = new DirectedWeightedMultigraph<>(GrafEdge.class);
 
 		for (ClassInfo classInfo : infos) {
 			String className = classInfo.getName();
@@ -108,8 +107,8 @@ public class GraphB {
 		return graph;
 	}
 
-	public DirectedWeightedMultigraph<String, DefaultWeightedEdge> buildGraph(HashMap<String, PackageInfo> packageInfoHashMap) {
-		DirectedWeightedMultigraph<String, DefaultWeightedEdge> graph = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
+	public DirectedWeightedMultigraph<String, GrafEdge> buildGraph(HashMap<String, PackageInfo> packageInfoHashMap) {
+		DirectedWeightedMultigraph<String, GrafEdge> graph = new DirectedWeightedMultigraph<>(GrafEdge.class);
 
 		for (Map.Entry<String, PackageInfo> entry : packageInfoHashMap.entrySet()) {
 
@@ -127,9 +126,8 @@ public class GraphB {
 
 			for (Map.Entry<String, Integer> entryPackageConnectionInfo : packageConnectionInfo.entrySet()) {
 				String secondVertex = entryPackageConnectionInfo.getKey();
-				DefaultWeightedEdge edge = graph.addEdge(firstVertex, secondVertex);
+				graph.addEdge(firstVertex, secondVertex,new GrafEdge(entryPackageConnectionInfo.getValue()));
 
-				graph.setEdgeWeight(edge,entryPackageConnectionInfo.getValue());
 
 			}
 
