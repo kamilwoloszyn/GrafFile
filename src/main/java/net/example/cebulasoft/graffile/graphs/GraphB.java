@@ -32,8 +32,8 @@ public class GraphB {
 		B = buildGraph(packageInfoHashMap);
 	}
 
-	private static DirectedWeightedMultigraph<String, DefaultWeightedEdge> buildGraph(FilesConnectionInfo d) {
-		DirectedWeightedMultigraph<String, DefaultWeightedEdge> graph = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
+	private static DirectedWeightedMultigraph<String, GrafEdge> buildGraph(FilesConnectionInfo d) {
+		DirectedWeightedMultigraph<String, GrafEdge> graph = new DirectedWeightedMultigraph<>(GrafEdge.class);
 
 		// extract data from hashmap
 
@@ -45,8 +45,8 @@ public class GraphB {
 		for (FileInfo file : d.values()) {
 			for (Iterator<Map.Entry<String, Integer>> it = file.getIteratorToReferences(); it.hasNext(); ) {
 				Map.Entry<String, Integer> connection = it.next();
-				DefaultWeightedEdge edge = graph.addEdge(file.getFullName(), connection.getKey());
-				graph.setEdgeWeight(edge, connection.getValue());
+				graph.addEdge(file.getFullName(), connection.getKey(),new GrafEdge(connection.getValue()));
+
 			}
 		}
 
@@ -98,7 +98,7 @@ public class GraphB {
 				for (Object oneElementMethod : methodUsed) {
 					String toVertex = oneElementMethod.toString();
 					graph.addVertex(toVertex);
-					graph.addEdge(vertex, toVertex);
+					graph.addEdge(vertex, toVertex,new GrafEdge(2));
 				}
 
 
