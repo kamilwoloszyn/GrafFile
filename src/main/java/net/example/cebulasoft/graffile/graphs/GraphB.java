@@ -6,6 +6,7 @@
 package net.example.cebulasoft.graffile.graphs;
 
 import net.example.cebulasoft.graffile.structure.*;
+import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DirectedWeightedMultigraph;
 
@@ -111,17 +112,30 @@ public class GraphB {
 		DirectedWeightedMultigraph<String, DefaultWeightedEdge> graph = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
 
 		for (Map.Entry<String, PackageInfo> entry : packageInfoHashMap.entrySet()) {
+
+			String Vertex = entry.getValue().getName();
+			graph.addVertex(Vertex);
+
+
+
+		}
+
+		for (Map.Entry<String, PackageInfo> entry : packageInfoHashMap.entrySet()) {
+
 			String firstVertex = entry.getValue().getName();
-			graph.addVertex(firstVertex);
 			HashMap<String, Integer> packageConnectionInfo = entry.getValue().getPackageConnection();
+
 			for (Map.Entry<String, Integer> entryPackageConnectionInfo : packageConnectionInfo.entrySet()) {
 				String secondVertex = entryPackageConnectionInfo.getKey();
 				DefaultWeightedEdge edge = graph.addEdge(firstVertex, secondVertex);
-				graph.setEdgeWeight(edge, entryPackageConnectionInfo.getValue());
+
+				graph.setEdgeWeight(edge,entryPackageConnectionInfo.getValue());
 
 			}
 
 		}
+
+
 
 		return graph;
 	}
